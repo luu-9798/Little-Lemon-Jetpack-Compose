@@ -1,4 +1,4 @@
-package com.luu9798.little_lemon_jetpack_compose.models
+package com.luu9798.little_lemon_jetpack_compose.model
 
 //User reservations
 data class Reservation (
