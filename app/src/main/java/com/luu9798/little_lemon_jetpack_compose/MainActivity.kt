@@ -3,45 +3,43 @@ package com.luu9798.little_lemon_jetpack_compose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.luu9798.little_lemon_jetpack_compose.ui.theme.LittleLemonJetpackComposeTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.luu9798.little_lemon_jetpack_compose.viewmodel.ReservationViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            LittleLemonJetpackComposeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            val viewModel: ReservationViewModel = viewModel()
+            val navController = rememberNavController()
+            NavHost(
+                navController = navController,
+                startDestination = "locations"
+            ) {
+                composable("locations") {
+                    /*LocationsScreen(vm) { restaurant ->
+                        vm.selectedRestaurant = restaurant
+                        nav.navigate("form")
+                    }*/
+                }
+                composable("form") {
+                    /*ReservationFormScreen(vm) {
+                        vm.validateAndSubmit()
+                        if (vm.validationError == null) {
+                            nav.navigate("details")
+                        }
+                    }*/
+                }
+                composable("details") {
+                    //ReservationDetailScreen(vm.reservation!!)
                 }
             }
+            /*LittleLemonJetpackComposeTheme {
+
+            }*/
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LittleLemonJetpackComposeTheme {
-        Greeting("Android")
     }
 }
