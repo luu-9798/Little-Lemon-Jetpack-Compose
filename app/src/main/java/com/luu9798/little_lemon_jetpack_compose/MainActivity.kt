@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.luu9798.little_lemon_jetpack_compose.view.LocationScreen
+import com.luu9798.little_lemon_jetpack_compose.view.ReservationFormScreen
 import com.luu9798.little_lemon_jetpack_compose.viewmodel.ReservationViewModel
 
 class MainActivity : ComponentActivity() {
@@ -27,12 +28,12 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 composable("form") {
-                    /*ReservationFormScreen(vm) {
-                        vm.validateAndSubmit()
-                        if (vm.validationError == null) {
-                            nav.navigate("details")
+                    ReservationFormScreen(viewModel) {
+                        viewModel.validateAndSubmit()
+                        if (viewModel.validationError == null) {
+                            navController.navigate("details")
                         }
-                    }*/
+                    }
                 }
                 composable("details") {
                     //ReservationDetailScreen(vm.reservation!!)

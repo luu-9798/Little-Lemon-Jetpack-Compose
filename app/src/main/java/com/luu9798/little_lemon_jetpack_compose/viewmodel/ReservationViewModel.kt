@@ -59,4 +59,39 @@ class ReservationViewModel: ViewModel() {
 
     //UI validation error
     var validationError by mutableStateOf<String?>(null)
+
+    //Validate and submit
+    fun validateAndSubmit() {
+        //Customer name must be at least 3 characters long and contain only letters and spaces
+        val nameValid = customerName.trim().length >= 3 && customerName.all { it.isLetter() || it.isWhitespace() }
+
+        //Customer email must be a valid email address
+        val emailValid = android.util.Patterns.EMAIL_ADDRESS.matcher(customerEmail).matches()
+
+        if (!nameValid || !emailValid || customerPhone.isBlank()) {
+            //Show all the error messages by joining them with a new line
+            val messages = mutableListOf<String>()
+            if (!nameValid) messages.add("Customer name must be at least 3 characters long")
+            if (!emailValid) messages.add("Customer email must be a valid email address")
+            if (customerPhone.isBlank()) messages.add("Customer phone cannot be empty")
+            validationError = messages.joinToString("\n")
+            return
+        }
+
+        //clean error
+        validationError = null
+
+        //build reservation
+        selectedRestaurant?.let { location ->
+            reservation = Reservation(
+                restaurantLocation = location,
+                partySize = partySize.coerceAtLeast(1),
+                dateTime = dateTime,
+                customerName = customerName.trim(),
+                customerEmail = customerEmail.trim(),
+                customerPhone = customerPhone.trim(),
+                specialRequest = specialRequest.trim()
+            )
+        }
+    }
 }

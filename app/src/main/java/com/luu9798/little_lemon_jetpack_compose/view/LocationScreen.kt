@@ -26,7 +26,7 @@ fun LocationScreen(
     onSelect: (RestaurantLocation) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
-        //LittleLemonLogo()
+        LittleLemonLogo()
         Text(
             text = "Select a location",
             modifier = Modifier

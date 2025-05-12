@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.luu9798.little_lemon_jetpack_compose.R
 
 @Composable
-fun LittleLemonIcon() {
+fun LittleLemonLogo() {
     Image(
         painter = painterResource(R.mipmap.little_lemon),
         contentDescription = "Little Lemon Logo",
