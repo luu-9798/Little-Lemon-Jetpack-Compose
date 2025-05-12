@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.luu9798.little_lemon_jetpack_compose.view.LocationScreen
 import com.luu9798.little_lemon_jetpack_compose.viewmodel.ReservationViewModel
 
 class MainActivity : ComponentActivity() {
@@ -20,10 +21,10 @@ class MainActivity : ComponentActivity() {
                 startDestination = "locations"
             ) {
                 composable("locations") {
-                    /*LocationsScreen(vm) { restaurant ->
-                        vm.selectedRestaurant = restaurant
-                        nav.navigate("form")
-                    }*/
+                    LocationScreen(viewModel) { restaurant ->
+                        viewModel.selectedRestaurant = restaurant
+                        navController.navigate("form")
+                    }
                 }
                 composable("form") {
                     /*ReservationFormScreen(vm) {
