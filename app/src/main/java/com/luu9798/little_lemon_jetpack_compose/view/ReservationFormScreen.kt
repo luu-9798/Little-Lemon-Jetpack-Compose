@@ -1,8 +1,14 @@
 package com.luu9798.little_lemon_jetpack_compose.view
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.icu.text.DateFormat
+import android.icu.util.Calendar
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -13,17 +19,37 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.luu9798.little_lemon_jetpack_compose.viewmodel.ReservationViewModel
+import java.util.Date
 
 @Composable
 fun ReservationFormScreen(
     viewModel: ReservationViewModel,
     onConfirm: () -> Unit
 ) {
+    val context = LocalContext.current
+
+    //flags to show date and time picker
+    var showDatePicker by remember { mutableStateOf(false) }
+    var showTimePicker by remember { mutableStateOf(false) }
+
+    // break your stored epoch into calendar fields
+    val calendar = Calendar.getInstance().also { it.timeInMillis = viewModel.dateTime }
+    val year = calendar.get(Calendar.YEAR)
+    val month = calendar.get(Calendar.MONTH)
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
+    val hour = calendar.get(Calendar.HOUR_OF_DAY)
+    val minute = calendar.get(Calendar.MINUTE)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -50,7 +76,25 @@ fun ReservationFormScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         //Date and Time picker
-        //TODO: Add date and time picker
+        OutlinedTextField(
+            value = DateFormat.getDateInstance().format(Date(viewModel.dateTime)),
+            onValueChange = {/** read only */},
+            label = { Text("Date") },
+            readOnly = true,
+            modifier = Modifier.fillMaxWidth()
+                .clickable { showDatePicker = true }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(viewModel.dateTime)),
+            onValueChange = {/** read only */},
+            label = { Text("Time") },
+            readOnly = true,
+            modifier = Modifier.fillMaxWidth()
+                .clickable { showTimePicker = true }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -114,6 +158,36 @@ fun ReservationFormScreen(
                     }
                 }
             )
+        }
+
+        if (showDatePicker) {
+            DatePickerDialog(
+                context,
+                { _, selYear, selMonth, selDay ->
+                    // preserve existing time
+                    val updatedCal = Calendar.getInstance().apply {
+                        set(selYear, selMonth, selDay, hour, minute)
+                    }
+                    viewModel.dateTime = updatedCal.timeInMillis
+                    showDatePicker = false
+                },
+                year, month, day
+            ).show()
+        }
+
+        if (showTimePicker) {
+            TimePickerDialog(
+                context,
+                { _, selHour, selMinute ->
+                    // preserve selected date
+                    val updatedCal = Calendar.getInstance().apply {
+                        set(year, month, day, selHour, selMinute)
+                    }
+                    viewModel.dateTime = updatedCal.timeInMillis
+                    showTimePicker = false
+                },
+                hour, minute, true  // 24-hour clock; use false for AM/PM
+            ).show()
         }
     }
 }
