@@ -18,8 +18,7 @@ fun LittleLemonLogo() {
         contentDescription = "Little Lemon Logo",
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
-            .padding(16.dp),
-        contentScale = ContentScale.Fit
+            .height(200.dp),
+        contentScale = ContentScale.Crop
     )
 }
