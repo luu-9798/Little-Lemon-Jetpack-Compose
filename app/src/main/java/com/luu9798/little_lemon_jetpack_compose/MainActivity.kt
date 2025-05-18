@@ -7,7 +7,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.luu9798.little_lemon_jetpack_compose.model.Reservation
+import com.luu9798.little_lemon_jetpack_compose.model.RestaurantLocation
 import com.luu9798.little_lemon_jetpack_compose.view.LocationScreen
+import com.luu9798.little_lemon_jetpack_compose.view.ReservationDetailScreen
 import com.luu9798.little_lemon_jetpack_compose.view.ReservationFormScreen
 import com.luu9798.little_lemon_jetpack_compose.viewmodel.ReservationViewModel
 
@@ -36,7 +39,23 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 composable("details") {
-                    //ReservationDetailScreen(vm.reservation!!)
+                    ReservationDetailScreen(
+                        reservation =
+                            viewModel.reservation ?:
+                            Reservation(
+                                restaurantLocation = RestaurantLocation(
+                                    city = "Unknown",
+                                    neighborhood = "Unknown",
+                                    phoneNumber = "Unknown"
+                                ),
+                                customerName = "Unknown",
+                                customerEmail = "Unknown",
+                                customerPhone = "Unknown",
+                                dateTime = System.currentTimeMillis(),
+                                partySize = 1,
+                                specialRequest = "Unknown"
+                            )
+                    )
                 }
             }
             /*LittleLemonJetpackComposeTheme {
